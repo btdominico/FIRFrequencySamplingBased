@@ -32,7 +32,7 @@ double[] fir = new double[(int)filterN + 1];
 Filter(filterN, fnormal, vANew, out fir);
 ```
 
-## Example on how to build the diagram using the code
+## Example on how to test the code
 ```c#
 double[] resultF = new double[8]; 
 testFilter(fir, out resultF);
