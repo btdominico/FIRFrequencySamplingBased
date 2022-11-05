@@ -1,4 +1,6 @@
 # FIR Frequency Sampling-Based 
+
+## Example on how to use the code
 ```c#
 double fs = 44100;
 double[] fHz = { 0, 250, 500, 1000, 2000, 3000, 4000, 6000, 8000, fs/2.0 };
@@ -28,4 +30,10 @@ for (int j = 0; j < fHz.Length; ++j)
 
 double[] fir = new double[(int)filterN + 1];
 Filter(filterN, fnormal, vANew, out fir);
+```
+
+## Example on how to build the diagram using the code
+```c#
+double[] resultF = new double[8]; 
+testFilter(fir, out resultF);
 ```
