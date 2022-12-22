@@ -47,9 +47,9 @@ static double[] Filter(double filterM, double[] vFreqs, double[] vMags, out doub
         Console.WriteLine("vFreqs and vMags must have the same length");
     }
 
-    double eps = 2.2204e-16;
+    double precision = 2.2204e-16;
 
-    if (Math.Abs(vFreqs[0]) > eps || Math.Abs(vFreqs[vFreqsLength - 1] - 1) > eps)
+    if (Math.Abs(vFreqs[0]) > precision || Math.Abs(vFreqs[vFreqsLength - 1] - 1) > precision)
     {
         Console.WriteLine("Invalid Range");
     }
@@ -65,31 +65,31 @@ static double[] Filter(double filterM, double[] vFreqs, double[] vMags, out doub
     gridNum = gridNum + 1;
     double[] H = new Double[(int)gridNum];
 
-    int nb = 1;
+    int nStart = 1;
 
     H[0] = vMags[0];
     int temp = 0;
 
     for (int i = 0; i < (vFreqsLength - 1); i++)
     {
-        int ne = (int)Math.Floor(vFreqs[i + 1] * gridNum);
-        if (nb < 0 || ne > gridNum)
+        int nEnd = (int)Math.Floor(vFreqs[i + 1] * gridNum);
+        if (nStart < 0 || nEnd > gridNum)
         {
             Console.WriteLine("Signal Error");
         }
 
-        double[] j = new Double[(int)ne];
+        double[] j = new Double[(int)nEnd];
 
-        for (int m = temp; m < ne; m++)
+        for (int m = temp; m < nEnd; m++)
         {
             j[m] = m + 1;
         }
 
-        double[] inc = new Double[ne];
+        double[] inc = new Double[nEnd];
 
-        if (nb == ne)
+        if (nStart == nEnd)
         {
-            for (int k = temp; k < ne; k++)
+            for (int k = temp; k < nEnd; k++)
             {
                 inc[k] = 0;
             }
@@ -97,18 +97,18 @@ static double[] Filter(double filterM, double[] vFreqs, double[] vMags, out doub
 
         else
         {
-            for (int k = temp; k < ne; k++)
+            for (int k = temp; k < nEnd; k++)
             {
-                inc[k] = (j[k] - nb) / (ne - nb);
+                inc[k] = (j[k] - nStart) / (nEnd - nStart);
             }
         }
 
-        for (int l = temp; l < ne; l++)
+        for (int l = temp; l < nEnd; l++)
         {
             H[l] = inc[l] * vMags[i + 1] + (1 - inc[l]) * vMags[i];
         }
-        nb = ne + 1;
-        temp = ne;
+        nStart = nEnd + 1;
+        temp = nEnd;
     }
 
     double dt = 0.5 * (filterM - 1);
